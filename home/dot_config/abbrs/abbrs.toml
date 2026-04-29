@@ -1,0 +1,40 @@
+# abbrs - abbreviation configuration
+# See: https://github.com/ushironoko/abbrs
+
+[settings]
+# serve = true  # enable daemon mode for sub-millisecond latency (default: true)
+# prefixes = ["sudo", "doas"]  # commands that preserve command position
+# remind = false  # remind when abbreviation could have been used
+# page_size = 10  # paginate candidate display (0 or omit = show all)
+
+[[abbr]]
+keyword = "gc"
+expansion = "git commit -m '{{message}}'"
+
+[[abbr]]
+keyword = "gpl"
+expansion = "git pull"
+
+[[abbr]]
+keyword = "gps"
+expansion = "git push"
+
+[[abbr]]
+keyword = "gsw"
+expansion = "git switch"
+
+[[abbr]]
+keyword = "gsw-"
+expansion = "git switch -"
+
+[[abbr]]
+keyword = "gswc"
+expansion = "git switch -t"
+
+[[abbr]]
+keyword = "cld"
+expansion = "CLAUDE_CODE_NO_FLICKER=1 claude"
+
+[[abbr]]
+keyword = "dft"
+expansion = "difit . devel"

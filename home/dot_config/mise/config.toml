@@ -1,0 +1,14 @@
+[tools]
+1password = "latest"
+claude = "latest"
+gh = "latest"
+ghq = "latest"
+node = "latest"
+starship = "latest"
+
+"npm:difit" = "latest"
+
+"github:ushironoko/abbrs" = "latest"
+
+[settings]
+install_before = "7d"  # only install versions released more than 7 days ago
