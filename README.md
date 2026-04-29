@@ -16,6 +16,16 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply ergofriend
 
 このコマンド1つで chezmoi のインストール、このリポジトリの clone、ファイル配置、mise インストールフックの実行までを行う。
 
+その後、マシン固有の git ユーザー情報を `~/.gitconfig.local` に作成する：
+
+```sh
+cp gitconfig.local.example ~/.gitconfig.local
+chmod 600 ~/.gitconfig.local
+$EDITOR ~/.gitconfig.local   # name / email / signingkey を埋める
+```
+
+`~/.gitconfig` から `[include]` で読み込まれ、署名コミットが有効になる。
+
 ## 日常的に使うコマンド
 
 | やりたいこと | コマンド |
