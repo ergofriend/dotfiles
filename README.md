@@ -24,3 +24,22 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply ergofriend
 | repo の内容を `$HOME` に反映 | `chezmoi apply` |
 | `$HOME` 側の変更を repo に取り込み | `chezmoi re-add` |
 | mise 設定のツールをインストール/更新 | `mise install` |
+
+## ghq clone を chezmoi のソースにする（任意）
+
+普段 ghq で repo を扱う場合、chezmoi のデフォルト clone (`~/.local/share/chezmoi`) ではなく ghq clone を直接ソースにできる。
+
+```sh
+# bootstrap 後に実行
+ghq get ergofriend/dotfiles
+mkdir -p ~/.config/chezmoi
+cat > ~/.config/chezmoi/chezmoi.toml <<EOF
+sourceDir = "$HOME/Documents/dev/github.com/ergofriend/dotfiles"
+EOF
+rm -rf ~/.local/share/chezmoi
+chezmoi diff   # 動作確認
+```
+
+以降 `chezmoi *` は ghq clone を見るので、編集 → `git push` までが1つの clone で完結する。
+
+なお `GHQ_ROOT` は `home/dot_config/mise/config.toml` の `[env]` で `$HOME/Documents/dev` に固定してあるので、新マシンでも同じパスに clone される。

@@ -1,3 +1,6 @@
+[env]
+GHQ_ROOT = "{{env.HOME}}/Documents/dev"
+
 [tools]
 1password = "latest"
 claude = "latest"
