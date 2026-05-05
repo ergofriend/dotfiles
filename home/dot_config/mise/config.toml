@@ -10,6 +10,7 @@ node = "latest"
 starship = "latest"
 
 "npm:difit" = "latest"
+"npm:@openai/codex" = "latest"
 
 "github:ushironoko/abbrs" = "latest"
 
