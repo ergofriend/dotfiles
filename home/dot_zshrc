@@ -1,3 +1,21 @@
 eval "$(~/.local/bin/mise activate zsh)"
 eval "$(starship init zsh)"
 eval "$(abbrs init zsh)"
+
+source <(fzf --zsh)
+
+# https://yazi-rs.github.io/docs/quick-start/
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	command yazi "$@" --cwd-file="$tmp"
+	IFS= read -r -d '' cwd < "$tmp"
+	[ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd"
+	rm -f -- "$tmp"
+}
+
+function fg() {
+  local target=$(ghq list | fzf)
+  if [ -n "$target" ]; then
+    cd "$(ghq root)/$target"
+  fi
+}

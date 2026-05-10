@@ -8,11 +8,15 @@ gh = "latest"
 ghq = "latest"
 node = "latest"
 starship = "latest"
+fzf = "latest"
+yazi = "latest"
+rtk = "latest"
 
 "npm:difit" = "latest"
 "npm:@openai/codex" = "latest"
 
 "github:ushironoko/abbrs" = "latest"
+"github:trasta298/keifu" = "latest"
 
 [settings]
 install_before = "7d"  # only install versions released more than 7 days ago
