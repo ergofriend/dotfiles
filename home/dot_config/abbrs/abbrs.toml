@@ -37,4 +37,8 @@ expansion = "CLAUDE_CODE_NO_FLICKER=1 claude"
 
 [[abbr]]
 keyword = "dft"
-expansion = "difit . devel"
+expansion = "difit"
+
+[[abbr]]
+keyword = "task"
+expansion = "mise run"

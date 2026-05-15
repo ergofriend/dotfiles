@@ -1,4 +1,9 @@
+autoload -Uz compinit
+compinit
+
 eval "$(~/.local/bin/mise activate zsh)"
+eval "$(~/.local/bin/mise completion zsh)"
+
 eval "$(starship init zsh)"
 eval "$(abbrs init zsh)"
 
