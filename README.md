@@ -29,23 +29,8 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply ergofriend
 | `$HOME` 側の変更を repo に取り込み | `chezmoi re-add` |
 | mise 設定のツールをインストール/更新 | `mise install` |
 
-## ghq clone を chezmoi のソースにする（任意）
+## chezmoi の sourceDir
 
-普段 ghq で repo を扱う場合、chezmoi のデフォルト clone (`~/.local/share/chezmoi`) ではなく ghq clone を直接ソースにできる。
+`home/.chezmoi.toml.tmpl` により、`chezmoi init` 時に `sourceDir` は `$HOME/Documents/dev/github.com/ergofriend/dotfiles` に設定される。
 
-```sh
-# bootstrap 後に実行
-ghq get ergofriend/dotfiles
-mkdir -p ~/.config/chezmoi
-cat > ~/.config/chezmoi/chezmoi.toml <<EOF
-sourceDir = "$(chezmoi execute-template '{{ .chezmoi.homeDir }}')/Documents/dev/github.com/ergofriend/dotfiles"
-EOF
-rm -rf ~/.local/share/chezmoi
-chezmoi diff   # 動作確認
-```
-
-以降 `chezmoi *` は ghq clone を見るので、編集 → `git push` までが1つの clone で完結する。
-
-この repo には `home/.chezmoi.toml.tmpl` も含めているため、新規 `chezmoi init` 時には同じ `sourceDir` 設定が自動生成される。
-
-なお `GHQ_ROOT` は `home/dot_config/mise/config.toml` の `[env]` で `$HOME/Documents/dev` に固定してあるので、新マシンでも同じパスに clone される。
+`GHQ_ROOT` は `home/dot_config/mise/config.toml` の `[env]` で `$HOME/Documents/dev` に固定してあるので、新マシンでも ghq clone と chezmoi source が同じパスになる。
