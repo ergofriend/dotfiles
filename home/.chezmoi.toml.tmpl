@@ -1,0 +1,6 @@
+sourceDir = "{{ .chezmoi.homeDir }}/Documents/dev/github.com/ergofriend/dotfiles"
+
+[data.git]
+userName = {{ promptStringOnce . "git.userName" "Git user.name" | quote }}
+userEmail = {{ promptStringOnce . "git.userEmail" "Git user.email" | quote }}
+signingKey = {{ promptStringOnce . "git.signingKey" "Git SSH signing key (not push key)" | quote }}

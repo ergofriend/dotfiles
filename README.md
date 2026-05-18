@@ -16,13 +16,7 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply ergofriend
 
 このコマンド1つで chezmoi のインストール、このリポジトリの clone、ファイル配置、mise インストールフックの実行までを行う。
 
-その後、マシン固有の git ユーザー情報を `~/.gitconfig.local` に作成する：
-
-```sh
-cp gitconfig.local.example ~/.gitconfig.local
-chmod 600 ~/.gitconfig.local
-$EDITOR ~/.gitconfig.local   # name / email / signingkey を埋める
-```
+初回実行時に、マシン固有の git ユーザー情報として `user.name`、`user.email`、署名用の `signingkey` を入力すると、`~/.gitconfig.local` が private file として生成される。push 用の SSH 認証鍵とは別の鍵を指定できる。
 
 `~/.gitconfig` から `[include]` で読み込まれ、署名コミットが有効になる。
 
@@ -44,12 +38,14 @@ $EDITOR ~/.gitconfig.local   # name / email / signingkey を埋める
 ghq get ergofriend/dotfiles
 mkdir -p ~/.config/chezmoi
 cat > ~/.config/chezmoi/chezmoi.toml <<EOF
-sourceDir = "$HOME/Documents/dev/github.com/ergofriend/dotfiles"
+sourceDir = "$(chezmoi execute-template '{{ .chezmoi.homeDir }}')/Documents/dev/github.com/ergofriend/dotfiles"
 EOF
 rm -rf ~/.local/share/chezmoi
 chezmoi diff   # 動作確認
 ```
 
 以降 `chezmoi *` は ghq clone を見るので、編集 → `git push` までが1つの clone で完結する。
+
+この repo には `home/.chezmoi.toml.tmpl` も含めているため、新規 `chezmoi init` 時には同じ `sourceDir` 設定が自動生成される。
 
 なお `GHQ_ROOT` は `home/dot_config/mise/config.toml` の `[env]` で `$HOME/Documents/dev` に固定してあるので、新マシンでも同じパスに clone される。

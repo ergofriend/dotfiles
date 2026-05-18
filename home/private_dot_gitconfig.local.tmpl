@@ -1,0 +1,12 @@
+[user]
+{{- $currentUserName := "ergofriend" }}
+{{- $currentUserEmail := "" }}
+{{- $currentSigningKey := "" }}
+{{- if stat (joinPath .chezmoi.homeDir ".gitconfig.local") }}
+{{-   $currentUserName = output "git" "config" "--file" (joinPath .chezmoi.homeDir ".gitconfig.local") "--get" "user.name" | trim }}
+{{-   $currentUserEmail = output "git" "config" "--file" (joinPath .chezmoi.homeDir ".gitconfig.local") "--get" "user.email" | trim }}
+{{-   $currentSigningKey = output "git" "config" "--file" (joinPath .chezmoi.homeDir ".gitconfig.local") "--get" "user.signingkey" | trim }}
+{{- end }}
+	name = {{ dig "git" "userName" $currentUserName . }}
+	email = {{ dig "git" "userEmail" $currentUserEmail . }}
+	signingkey = {{ dig "git" "signingKey" $currentSigningKey . }}

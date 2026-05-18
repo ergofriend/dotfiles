@@ -1,0 +1,18 @@
+[include]
+	path = ~/.gitconfig.local
+
+[gpg]
+	format = ssh
+{{- if eq .chezmoi.os "darwin" }}
+[gpg "ssh"]
+	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
+{{- else if and (eq .chezmoi.os "linux") (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
+[core]
+	sshCommand = ssh.exe
+[gpg "ssh"]
+	program = /mnt/c/Users/altsi/AppData/Local/Microsoft/WindowsApps/op-ssh-sign-wsl.exe
+{{- end }}
+[commit]
+	gpgsign = true
+[rebase]
+	gpgsign = true
