@@ -1,12 +1,13 @@
 # dotfiles
 
-ergofriend の macOS 向け個人 dotfiles。[chezmoi](https://www.chezmoi.io/) と [mise](https://mise.jdx.dev/) で管理。
+ergofriend の macOS 向け個人 dotfiles。[chezmoi](https://www.chezmoi.io/) と [mise](https://mise.jdx.dev/) と [APM](https://github.com/microsoft/apm) で管理。
 
 ## 構成
 
 - `.chezmoiroot` — chezmoi のソースディレクトリを `home/` に指定
 - `home/` — chezmoi 管理下のファイル群。`$HOME` を chezmoi の命名規約 (`dot_*` など) でミラー
 - `home/run_once_after_install-mise.sh` — `chezmoi apply` 後に1回だけ実行され、mise 本体と `~/.config/mise/config.toml` で宣言したツールをインストール
+- `home/dot_apm/` — APM の user-scope manifest。Codex 向け Superpowers を管理
 
 ## 新マシンでの初期セットアップ
 
@@ -28,6 +29,21 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply ergofriend
 | repo の内容を `$HOME` に反映 | `chezmoi apply` |
 | `$HOME` 側の変更を repo に取り込み | `chezmoi re-add` |
 | mise 設定のツールをインストール/更新 | `mise install` |
+| APM 管理の agent tooling を再展開 | `apm install -g` |
+
+## APM / Superpowers
+
+`home/dot_apm/apm.yml` で `obra/superpowers#v5.1.0` を Codex target 向けに pin している。
+
+新マシンでは `home/run_once_after_install-mise.sh` により、`mise install` 後に自動で APM 管理の内容も反映される。
+
+手動で再展開する：
+
+```sh
+apm install -g
+```
+
+これにより Superpowers の skills/hooks が user scope に展開される。
 
 ## chezmoi の sourceDir
 

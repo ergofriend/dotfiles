@@ -15,6 +15,7 @@ rtk = "latest"
 "npm:difit" = "latest"
 "npm:@openai/codex" = "latest"
 
+"github:microsoft/apm" = "latest"
 "github:ushironoko/abbrs" = "latest"
 "github:trasta298/keifu" = "latest"
 

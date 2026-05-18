@@ -11,3 +11,10 @@ export PATH="$HOME/.local/bin:$PATH"
 
 # Install all tools declared in ~/.config/mise/config.toml.
 mise install
+
+# Deploy APM-managed agent tooling, such as Superpowers for Codex.
+if command -v apm >/dev/null 2>&1; then
+  apm install -g
+else
+  mise exec github:microsoft/apm -- apm install -g
+fi
