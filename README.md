@@ -6,7 +6,7 @@ ergofriend の macOS 向け個人 dotfiles。[chezmoi](https://www.chezmoi.io/) 
 
 - `.chezmoiroot` — chezmoi のソースディレクトリを `home/` に指定
 - `home/` — chezmoi 管理下のファイル群。`$HOME` を chezmoi の命名規約 (`dot_*` など) でミラー
-- `home/run_once_after_install-mise.sh` — `chezmoi apply` 後に1回だけ実行され、mise 本体と `~/.config/mise/config.toml` で宣言したツールをインストール
+- `home/run_once_after_bootstrap.sh` — `chezmoi apply` 後に1回だけ実行され、mise/APM/Codex hook などの tooling を初期化
 - `home/dot_apm/` — APM の user-scope manifest。Codex 向け Superpowers を管理
 
 ## 新マシンでの初期セットアップ
@@ -35,7 +35,7 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply ergofriend
 
 `home/dot_apm/apm.yml` で `obra/superpowers#v5.1.0` を Codex target 向けに pin している。
 
-新マシンでは `home/run_once_after_install-mise.sh` により、`mise install` 後に自動で APM 管理の内容も反映される。
+新マシンでは `home/run_once_after_bootstrap.sh` により、`mise install` 後に自動で APM 管理の内容も反映される。
 
 手動で再展開する：
 
