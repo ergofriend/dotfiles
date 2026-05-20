@@ -1,2 +1,5 @@
 .claude/settings.local.json
 docs/plans/
+
+# APM dependencies
+apm_modules/
