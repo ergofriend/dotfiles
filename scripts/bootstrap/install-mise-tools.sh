@@ -6,7 +6,7 @@ if ! command -v mise >/dev/null 2>&1 && [ ! -x "$HOME/.local/bin/mise" ]; then
 fi
 
 mise install
-mise exec github:microsoft/apm -- apm install -g
+mise exec github:microsoft/apm -- apm install -g --frozen
 # Claude integration currently does not patch settings correctly in non-interactive bootstrap.
 # mise exec rtk -- rtk init -g --agent claude
 mise exec rtk -- rtk init -g --codex

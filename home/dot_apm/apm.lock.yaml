@@ -1,5 +1,5 @@
 lockfile_version: '1'
-generated_at: '2026-05-18T21:30:18.637188+00:00'
+generated_at: '2026-05-21T11:03:55.308717+00:00'
 apm_version: 0.13.0
 dependencies:
 - repo_url: obra/superpowers
@@ -22,4 +22,18 @@ dependencies:
   - .agents/skills/verification-before-completion
   - .agents/skills/writing-plans
   - .agents/skills/writing-skills
+  - .claude/skills/brainstorming
+  - .claude/skills/dispatching-parallel-agents
+  - .claude/skills/executing-plans
+  - .claude/skills/finishing-a-development-branch
+  - .claude/skills/receiving-code-review
+  - .claude/skills/requesting-code-review
+  - .claude/skills/subagent-driven-development
+  - .claude/skills/systematic-debugging
+  - .claude/skills/test-driven-development
+  - .claude/skills/using-git-worktrees
+  - .claude/skills/using-superpowers
+  - .claude/skills/verification-before-completion
+  - .claude/skills/writing-plans
+  - .claude/skills/writing-skills
   content_hash: sha256:fb4f87bfef928a6d68f5d5aaa29e3eba011961c5f03bbf171c3c348d8d161abb
