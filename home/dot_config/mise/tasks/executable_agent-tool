@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+#MISE description="Configure Codex, Claude Code, Superpowers, and rtk"
+set -euo pipefail
+
+run_codex() {
+  mise exec npm:@openai/codex -- codex "$@"
+}
+
+run_claude() {
+  mise exec claude -- claude "$@"
+}
+
+remove_stale_codex_apm_hooks() {
+  local hooks_file="${CODEX_HOME:-$HOME/.codex}/hooks.json"
+
+  if [ ! -f "$hooks_file" ]; then
+    return
+  fi
+
+  if grep -Fq '"_apm_source": "superpowers"' "$hooks_file" &&
+    grep -Fq '.apm/apm_modules/obra/superpowers' "$hooks_file"; then
+    rm -f "$hooks_file"
+  fi
+}
+
+remove_stale_codex_apm_hooks
+
+if ! run_codex plugin list --marketplace openai-curated | grep -Eq '^superpowers@openai-curated[[:space:]]+installed'; then
+  run_codex plugin add superpowers@openai-curated
+fi
+
+if ! run_claude plugin marketplace list | grep -Fq 'superpowers-marketplace'; then
+  run_claude plugin marketplace add obra/superpowers-marketplace
+fi
+
+if ! run_claude plugin list | grep -Fq 'superpowers'; then
+  run_claude plugin install superpowers@superpowers-marketplace --scope user
+fi
+
+mise exec rtk -- rtk init -g --agent claude --auto-patch
+mise exec rtk -- rtk init -g --codex

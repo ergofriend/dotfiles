@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#MISE description="Install mise tools and configure agent tooling"
+set -euo pipefail
+
+mise install
+mise run agent-tool

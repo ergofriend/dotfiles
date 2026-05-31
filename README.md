@@ -1,13 +1,12 @@
 # dotfiles
 
-ergofriend の macOS 向け個人 dotfiles。[chezmoi](https://www.chezmoi.io/) と [mise](https://mise.jdx.dev/) と [APM](https://github.com/microsoft/apm) で管理。
+ergofriend の macOS 向け個人 dotfiles。[chezmoi](https://www.chezmoi.io/) と [mise](https://mise.jdx.dev/) で管理。
 
 ## 構成
 
 - `.chezmoiroot` — chezmoi のソースディレクトリを `home/` に指定
 - `home/` — chezmoi 管理下のファイル群。`$HOME` を chezmoi の命名規約 (`dot_*` など) でミラー
-- `home/run_once_after_bootstrap.sh` — `chezmoi apply` 後に1回だけ実行され、mise/APM/Codex hook などの tooling を初期化
-- `home/dot_apm/` — APM の user-scope manifest。Codex 向け Superpowers を管理
+- `home/run_once_after_bootstrap.sh` — `chezmoi apply` 後に1回だけ実行され、mise/agent plugin/Codex hook などの tooling を初期化
 
 ## 新マシンでの初期セットアップ
 
@@ -29,21 +28,30 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply ergofriend
 | repo の内容を `$HOME` に反映 | `chezmoi apply` |
 | `$HOME` 側の変更を repo に取り込み | `chezmoi re-add` |
 | mise 設定のツールをインストール/更新 | `mise install` |
-| APM 管理の agent tooling を再展開 | `apm install -g` |
+| agent tooling を再設定 | `mise run agent-tool` |
 
-## APM / Superpowers
+## Agent Plugins / Superpowers
 
-`home/dot_apm/apm.yml` で `obra/superpowers#v5.1.0` を Codex target 向けに pin している。
+Superpowers は APM ではなく、各 agent の標準 plugin CLI で管理する。
 
-新マシンでは `home/run_once_after_bootstrap.sh` により、`mise install` 後に自動で APM 管理の内容も反映される。
-
-手動で再展開する：
+新マシンでは `home/run_once_after_bootstrap.sh` により、`mise run bootstrap` が自動実行される。
+`mise-tasks/agent-tool` が次の標準CLIを `mise exec` 経由で実行する。
 
 ```sh
-apm install -g
+codex plugin add superpowers@openai-curated
+claude plugin marketplace add obra/superpowers-marketplace
+claude plugin install superpowers@superpowers-marketplace --scope user
 ```
 
-これにより Superpowers の skills/hooks が user scope に展開される。
+手動で更新する：
+
+```sh
+mise run agent-tool
+```
+
+Superpowers の skills は Codex CLI と Claude Code の plugin 機構がそれぞれ配置する。
+Claude Code 版は plugin に `SessionStart` hook も含まれる。
+Codex CLI 版は標準 marketplace plugin としては hook を含まないため、APM 時代の古い Codex hook が残っていれば bootstrap 時に削除する。
 
 ## chezmoi の sourceDir
 
