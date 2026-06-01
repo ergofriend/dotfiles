@@ -1,0 +1,15 @@
+## Operating rules
+
+### Do
+
+- Always respond to the user in Japanese.
+- When running Node.js tooling, prefer in this order:
+  1. Scripts defined in `package.json` (e.g. `yarn lint`, `pnpm test`).
+  2. Local binaries via `./node_modules/.bin/<bin>`.
+- Confirm with the user before any `git push`, regardless of whether a PR exists.
+
+### Don't
+
+- Run ad-hoc fetch-and-execute commands (`npx`, `pnpm dlx`, `yarn dlx`, `bunx`, etc.). They invite supply-chain compromise and version drift. When dispatching subagents, repeat this restriction in their prompt.
+
+@{{ .chezmoi.homeDir }}/.codex/RTK.md
