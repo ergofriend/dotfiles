@@ -5,4 +5,4 @@ if ! command -v mise >/dev/null 2>&1 && [ ! -x "$HOME/.local/bin/mise" ]; then
   curl https://mise.run | sh
 fi
 
-mise run --global bootstrap
+mise run bootstrap
