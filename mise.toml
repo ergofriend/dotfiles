@@ -1,2 +1,6 @@
 [tools]
 chezmoi = "latest"
+
+[tasks.diff]
+description = "Show chezmoi diff in re-add direction (home edits as +)"
+run = "chezmoi diff --reverse"
