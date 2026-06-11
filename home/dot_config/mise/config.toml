@@ -3,7 +3,6 @@ GHQ_ROOT = "{{env.HOME}}/Documents/dev"
 
 [tools]
 1password = "latest"
-claude = "latest"
 gh = "latest"
 ghq = "latest"
 node = "latest"
@@ -11,8 +10,10 @@ starship = "latest"
 fzf = "latest"
 yazi = "latest"
 rtk = "latest"
+bat = "latest"
 
 "npm:difit" = "latest"
+"npm:ccusage" = "latest"
 "npm:@openai/codex" = "latest"
 
 "github:ushironoko/abbrs" = "latest"
@@ -21,3 +22,7 @@ rtk = "latest"
 
 [settings]
 install_before = "7d"  # only install versions released more than 7 days ago
+
+[tools.claude]
+version = "latest"
+install_before = "0d"
