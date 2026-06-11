@@ -23,6 +23,11 @@ bat = "latest"
 [settings]
 install_before = "7d"  # only install versions released more than 7 days ago
 
+[settings.github]
+# gh CLI stores its token in the macOS keyring, not hosts.yml, so mise
+# cannot read it directly; fetch it via gh instead.
+credential_command = "gh auth token"
+
 [tools.claude]
 version = "latest"
 install_before = "0d"
