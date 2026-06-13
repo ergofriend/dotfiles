@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+#MISE description="Install or update NVIDIA SkillSpector"
+set -euo pipefail
+
+repo_url="https://github.com/NVIDIA/skillspector.git"
+ghq_root="${GHQ_ROOT:-$HOME/Documents/dev}"
+install_dir="${SKILLSPECTOR_DIR:-$ghq_root/github.com/NVIDIA/skillspector}"
+dotfiles_source_dir="${ERGODOTFILES_SOURCE_DIR:-$HOME/Documents/dev/github.com/ergofriend/dotfiles}"
+
+if [ "${ERGODOTFILES_IN_SKILLSPECTOR_SHELL:-}" != 1 ]; then
+  if ! command -v nix >/dev/null 2>&1; then
+    printf '%s\n' "Nix is required for SkillSpector dependencies. Run: mise run install-nix" >&2
+    exit 127
+  fi
+
+  cd "$dotfiles_source_dir"
+  exec env \
+    ERGODOTFILES_IN_SKILLSPECTOR_SHELL=1 \
+    GHQ_ROOT="$ghq_root" \
+    SKILLSPECTOR_DIR="$install_dir" \
+    nix --extra-experimental-features "nix-command flakes" develop .#skillspector --command bash "$0"
+fi
+
+if [ -d "$install_dir/.git" ]; then
+  git -C "$install_dir" pull --ff-only
+else
+  mkdir -p "$(dirname "$install_dir")"
+  git clone "$repo_url" "$install_dir"
+fi
+
+cd "$install_dir"
+
+uv venv .venv --python "$(command -v python3.12)" --allow-existing
+
+. .venv/bin/activate
+
+if [ -f uv.lock ]; then
+  uv sync
+elif [ -f Makefile ] && command -v make >/dev/null 2>&1; then
+  make install
+else
+  pip install -e .
+fi
+
+mkdir -p "$HOME/.local/bin"
+ln -sfn "$install_dir/.venv/bin/skillspector" "$HOME/.local/bin/skillspector"

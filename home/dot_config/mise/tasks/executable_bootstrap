@@ -4,3 +4,8 @@ set -euo pipefail
 
 mise install
 mise run agent-tool
+if command -v nix >/dev/null 2>&1; then
+  mise run install-skillspector
+else
+  printf '%s\n' "Skipping SkillSpector setup because Nix is not installed. Run: mise run install-nix && mise run install-skillspector" >&2
+fi

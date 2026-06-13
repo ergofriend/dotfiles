@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+#MISE description="Install Nix with NixOS nix-installer"
+set -euo pipefail
+
+if command -v nix >/dev/null 2>&1; then
+  nix --version
+  exit 0
+fi
+
+run_nix_installer() {
+  if command -v mise >/dev/null 2>&1; then
+    mise exec github:NixOS/nix-installer -- nix-installer "$@"
+    return
+  fi
+
+  if command -v nix-installer >/dev/null 2>&1; then
+    nix-installer "$@"
+    return
+  fi
+
+  printf '%s\n' "mise or nix-installer is required to install Nix." >&2
+  return 127
+}
+
+run_nix_installer install --no-confirm
+
+nix_profile="/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh"
+if [ -f "$nix_profile" ]; then
+  # shellcheck disable=SC1090
+  . "$nix_profile"
+fi
+
+if command -v nix >/dev/null 2>&1; then
+  nix --version
+else
+  printf '%s\n' "Nix was installed, but this shell cannot see it yet. Open a new shell and run nix --version." >&2
+fi

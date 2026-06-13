@@ -1,6 +1,15 @@
 [tools]
 chezmoi = "latest"
+"github:NixOS/nix-installer" = "latest"
 
 [tasks.diff]
 description = "Show chezmoi diff in re-add direction (home edits as +)"
 run = "chezmoi diff --reverse"
+
+[tasks.install-nix]
+description = "Install Nix with NixOS nix-installer"
+run = "bash home/dot_config/mise/tasks/executable_install-nix"
+
+[tasks.install-skillspector]
+description = "Install or update NVIDIA SkillSpector"
+run = "bash home/dot_config/mise/tasks/executable_install-skillspector"
