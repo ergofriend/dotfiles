@@ -1,0 +1,4 @@
+interface:
+  display_name: "SkillSpector Guard"
+  short_description: "Scan skills before review or install"
+  default_prompt: "Use $skillspector-guard to scan this skill before installing it."
