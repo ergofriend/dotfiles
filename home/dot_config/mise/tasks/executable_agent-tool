@@ -10,6 +10,10 @@ run_claude() {
   mise exec claude -- claude "$@"
 }
 
+obsidian_skills_repo_url="https://github.com/kepano/obsidian-skills.git"
+ghq_root="${GHQ_ROOT:-$HOME/Documents/dev}"
+obsidian_skills_dir="${OBSIDIAN_SKILLS_DIR:-$ghq_root/github.com/kepano/obsidian-skills}"
+
 remove_stale_codex_apm_hooks() {
   local hooks_file="${CODEX_HOME:-$HOME/.codex}/hooks.json"
 
@@ -23,18 +27,60 @@ remove_stale_codex_apm_hooks() {
   fi
 }
 
+install_obsidian_skills_repo() {
+  if [ -d "$obsidian_skills_dir/.git" ]; then
+    git -C "$obsidian_skills_dir" pull --ff-only
+  else
+    mkdir -p "$(dirname "$obsidian_skills_dir")"
+    git clone "$obsidian_skills_repo_url" "$obsidian_skills_dir"
+  fi
+}
+
+install_codex_obsidian_skills() {
+  local codex_skills_dir="${CODEX_HOME:-$HOME/.codex}/skills"
+  local link_target
+  local skill_dir
+
+  mkdir -p "$codex_skills_dir"
+
+  for skill_dir in "$obsidian_skills_dir"/skills/*; do
+    [ -d "$skill_dir" ] || continue
+    link_target="$skill_dir"
+    if [[ "$skill_dir" == "$HOME"/* ]]; then
+      link_target="../..${skill_dir#"$HOME"}"
+    fi
+    ln -sfn "$link_target" "$codex_skills_dir/$(basename "$skill_dir")"
+  done
+}
+
 remove_stale_codex_apm_hooks
 
-if ! run_codex plugin list --marketplace openai-curated | grep -Eq '^superpowers@openai-curated[[:space:]]+installed'; then
+codex_openai_plugins="$(run_codex plugin list --marketplace openai-curated)"
+if ! grep -Eq '^superpowers@openai-curated[[:space:]]+installed' <<<"$codex_openai_plugins"; then
   run_codex plugin add superpowers@openai-curated
 fi
 
-if ! run_claude plugin marketplace list | grep -Fq 'superpowers-marketplace'; then
+install_obsidian_skills_repo
+install_codex_obsidian_skills
+
+claude_marketplaces="$(run_claude plugin marketplace list)"
+if ! grep -Fq 'superpowers-marketplace' <<<"$claude_marketplaces"; then
   run_claude plugin marketplace add obra/superpowers-marketplace
 fi
 
-if ! run_claude plugin list | grep -Fq 'superpowers'; then
+claude_plugins="$(run_claude plugin list)"
+if ! grep -Fq 'superpowers' <<<"$claude_plugins"; then
   run_claude plugin install superpowers@superpowers-marketplace --scope user
+fi
+
+claude_marketplaces="$(run_claude plugin marketplace list)"
+if ! grep -Fq 'obsidian-skills' <<<"$claude_marketplaces"; then
+  run_claude plugin marketplace add kepano/obsidian-skills
+fi
+
+claude_plugins="$(run_claude plugin list)"
+if ! grep -Eq 'obsidian@obsidian-skills' <<<"$claude_plugins"; then
+  run_claude plugin install obsidian@obsidian-skills --scope user
 fi
 
 mise exec rtk -- rtk init -g --agent claude --auto-patch

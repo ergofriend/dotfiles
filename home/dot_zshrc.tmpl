@@ -1,9 +1,16 @@
+if [[ -x "$HOME/.local/bin/mise" ]]; then
+  eval "$("$HOME/.local/bin/mise" activate zsh)"
+fi
+
+if [[ "${TERM:-}" == "dumb" ]] || [[ ! -o interactive ]]; then
+  return
+fi
+
 setopt hist_ignore_space
 
 autoload -Uz compinit
 compinit
 
-eval "$(~/.local/bin/mise activate zsh)"
 eval "$(~/.local/bin/mise completion zsh)"
 
 eval "$(starship init zsh)"

@@ -12,6 +12,7 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply ergofriend
 初回 `chezmoi apply` 後に mise と agent tooling をセットアップする。
 Nix は大きめのシステム変更なので自動では入れず、必要なタイミングで手動インストールする。
 SkillSpector は Nix 導入後に `mise run install-skillspector` でセットアップする。
+Obsidian Desktop は任意で、`mise run agent-tool` は agent 向けの Obsidian skills を設定する。
 
 ```sh
 cd "$(dirname "$(chezmoi source-path)")"
@@ -31,7 +32,7 @@ mise run install-skillspector
 | mise tools を更新 | `mise install` |
 | Nix を入れる | `mise run install-nix` |
 | Home Manager を反映 | `nix --extra-experimental-features "nix-command flakes" run github:nix-community/home-manager -- switch --flake .#kasu-linux` |
-| agent tooling を再設定 | `mise run agent-tool` |
+| agent tooling / Obsidian skills を再設定 | `mise run agent-tool` |
 | SkillSpector を入れる/更新 | `mise run install-skillspector` |
 
 macOS の Home Manager entry は `.#kasu-darwin`。
