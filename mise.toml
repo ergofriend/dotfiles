@@ -1,6 +1,6 @@
 [tools]
 chezmoi = "latest"
-"github:NixOS/nix-installer" = "latest"
+"github:NixOS/nix-installer" = { version = "latest", os = ["linux", "macos"] }
 
 [tasks.diff]
 description = "Show chezmoi diff in re-add direction (home edits as +)"

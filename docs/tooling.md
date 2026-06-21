@@ -30,6 +30,31 @@ macOS:
 nix --extra-experimental-features "nix-command flakes" run github:nix-community/home-manager -- switch --flake .#kasu-darwin
 ```
 
+## Windows / Git Bash
+
+Windows bootstrap は Linux/macOS より小さく保ち、Git Bash 前提で実行する。mise は `winget` で入れ、chezmoi は Git Bash から installer を実行する。
+
+```powershell
+winget install --id jdx.mise
+```
+
+```sh
+sh -c "$(curl -fsLS https://get.chezmoi.io)" -- -b "$HOME/.local/bin"
+chezmoi init --apply ergofriend
+cd "$(cygpath -u "$(chezmoi source-path)")"
+mise install
+```
+
+`GHQ_ROOT` は mise の global env として `~/.config/mise/config.toml` から供給する。Git Bash ではドライブ名を埋め込まず、`$HOME/Documents/dev` に揃える。
+
+```sh
+git config --global ghq.root "$HOME/Documents/dev"
+```
+\nbootstrap 中は `~/.bashrc` に `mise activate bash` を入れない。Git Bash が Windows のユーザー環境変数 Path を引き継いで `mise` と shims を見つけられるなら、`.bashrc` への追記は不要。見えない場合だけ、Windows のユーザー環境変数 Path に `%LOCALAPPDATA%\\mise\\shims` を追加して Git Bash を開き直す。必要なら `where.exe mise` で実体を確認する。
+
+chezmoi が `.claude/skills/skillspector-guard` や `.codex/skills/skillspector-guard` の作成で失敗する場合は、Windows が symlink 作成をブロックしている。開発者モードを有効にするか、管理者権限の shell で `chezmoi apply` を再実行する。
+
+Nix と SkillSpector は Linux/macOS 向けの repo root task として扱う。repo の `mise.toml` では `github:NixOS/nix-installer` に OS filter を付けているため、Windows の `mise install` ではスキップされる。
 ## SkillSpector
 
 [NVIDIA/SkillSpector](https://github.com/NVIDIA/skillspector) は mise task で導入する。

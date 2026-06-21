@@ -20,6 +20,22 @@ mise run install-nix
 mise run install-skillspector
 ```
 
+## Windows / Git Bash
+
+Windows native setup は Git Bash 前提で実行する。mise は winget で入れ、chezmoi は Git Bash から installer を実行する。
+
+```powershell
+winget install --id jdx.mise
+```
+
+```sh
+sh -c "$(curl -fsLS https://get.chezmoi.io)" -- -b "$HOME/.local/bin"
+chezmoi init --apply ergofriend
+cd "$(cygpath -u "$(chezmoi source-path)")"
+mise install
+```
+
+Git Bash の PATH、`GHQ_ROOT`、Windows の symlink 権限については [Tooling](docs/tooling.md) を参照する。Nix と SkillSpector は Linux/macOS 向けの repo root task として扱い、Windows ではまず `mise install` まで通す。
 ## Commands
 
 `mise run ...` と `nix ... --flake .#...` は、この dotfiles repo root で実行する。
